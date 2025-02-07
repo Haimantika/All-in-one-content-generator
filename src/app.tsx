@@ -1,33 +1,42 @@
 import React, { useState } from 'react';
 import { BookOpen, Send, Sparkles } from 'lucide-react';
-
-interface Tutorial {
-  topic: string;
-  timestamp: string;
-}
+import { marked } from 'marked';
+import { Tutorial } from './types';
+import { generateTutorial } from './services/openai';
 
 function App() {
   const [topic, setTopic] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!topic.trim()) return;
 
     setIsLoading(true);
-    // Simulating API call
-    setTimeout(() => {
-      setTutorials([
-        {
-          topic,
-          timestamp: new Date().toLocaleString(),
-        },
-        ...tutorials,
+    const newTutorial: Tutorial = {
+      topic,
+      timestamp: new Date().toLocaleString(),
+      isLoading: true
+    };
+
+    setTutorials([newTutorial, ...tutorials]);
+    
+    try {
+      const content = await generateTutorial(topic);
+      setTutorials(prevTutorials => [
+        { ...newTutorial, content, isLoading: false },
+        ...prevTutorials.slice(1)
       ]);
+    } catch (error) {
+      setTutorials(prevTutorials => [
+        { ...newTutorial, error: (error as Error).message, isLoading: false },
+        ...prevTutorials.slice(1)
+      ]);
+    } finally {
       setTopic('');
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -40,10 +49,10 @@ function App() {
               <Sparkles className="w-12 h-12 text-indigo-600" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              All-in-one Content Generator
+              Tutorial Generator
             </h1>
             <p className="text-lg text-gray-600">
-              Transform any topic into a comprehensive tutorial with AI
+              Transform any topic into a comprehensive tutorial with AI.
             </p>
           </div>
 
@@ -54,7 +63,7 @@ function App() {
                 type="text"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                placeholder="Enter a topic (e.g., 'Building a REST API with Node.js')"
+                placeholder="Enter a topic (e.g., 'API, GenerativeAI')"
                 className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                 disabled={isLoading}
               />
@@ -96,12 +105,22 @@ function App() {
                     <p className="text-sm text-gray-500">
                       Generated on {tutorial.timestamp}
                     </p>
-                    {/* Placeholder for tutorial content */}
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                      <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
-                      <div className="h-4 bg-gray-200 rounded w-1/2 mt-2 animate-pulse" />
-                      <div className="h-4 bg-gray-200 rounded w-2/3 mt-2 animate-pulse" />
-                    </div>
+                    {tutorial.isLoading ? (
+                      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
+                        <div className="h-4 bg-gray-200 rounded w-1/2 mt-2 animate-pulse" />
+                        <div className="h-4 bg-gray-200 rounded w-2/3 mt-2 animate-pulse" />
+                      </div>
+                    ) : tutorial.error ? (
+                      <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-lg">
+                        {tutorial.error}
+                      </div>
+                    ) : (
+                      <div 
+                        className="mt-4 p-4 bg-gray-50 rounded-lg prose prose-indigo max-w-none"
+                        dangerouslySetInnerHTML={{ __html: marked(tutorial.content || '') }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
