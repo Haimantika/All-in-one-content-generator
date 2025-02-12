@@ -44,11 +44,7 @@ export async function generateTutorial(topic: string): Promise<string> {
   
     let errorMessage = "Unknown error occurred.";
   
-    if (error instanceof OpenAI.APIError) {
-      errorMessage = `API Error: ${error.status} - ${error.message}`;
-    } else if (error instanceof OpenAI.APIConnectionError) {
-      errorMessage = "Network error: Failed to connect to OpenAI.";
-    } else if (error instanceof OpenAI.RateLimitError) {
+  if (error instanceof OpenAI.RateLimitError) {
       errorMessage = "Rate limit exceeded. Please try again later.";
     } else if (error instanceof Error) {
       errorMessage = error.message; 
