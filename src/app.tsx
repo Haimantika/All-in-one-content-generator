@@ -156,16 +156,16 @@ function App() {
 
           {/* Selected Tutorial Content */}
           {selectedTutorial ? (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="p-2 bg-indigo-100 rounded-lg">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 hover:shadow-md transition-shadow overflow-hidden">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                <div className="p-2 bg-indigo-100 rounded-lg self-start flex-shrink-0">
                   <BookOpen className="w-6 h-6 text-indigo-600" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <div className="flex-1 min-w-0"> {/* Added min-w-0 to handle text overflow */}
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 break-words">
                     {selectedTutorial.topic}
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs sm:text-sm text-gray-500">
                     Generated on {selectedTutorial.timestamp}
                   </p>
                   {selectedTutorial.isLoading ? (
@@ -175,27 +175,29 @@ function App() {
                       <div className="h-4 bg-gray-200 rounded w-2/3 mt-2 animate-pulse" />
                     </div>
                   ) : selectedTutorial.error ? (
-                    <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-lg">
+                    <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm sm:text-base">
                       {selectedTutorial.error}
                     </div>
                   ) : (
-                    <div 
-                      className="mt-4 p-4 bg-gray-50 rounded-lg prose prose-indigo max-w-none"
-                      dangerouslySetInnerHTML={{ __html: marked(selectedTutorial.content || '') }}
-                    />
+                    <div className="mt-4 relative">
+                      <div 
+                        className="p-4 bg-gray-50 rounded-lg prose prose-sm sm:prose prose-indigo max-w-none overflow-x-auto whitespace-pre-wrap break-words"
+                        dangerouslySetInnerHTML={{ __html: marked(selectedTutorial.content || '') }}
+                      />
+                    </div>
                   )}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="text-center py-8 sm:py-12">
               <div className="text-gray-400 mb-4">
-                <BookOpen className="w-12 h-12 mx-auto" />
+                <BookOpen className="w-8 h-8 sm:w-12 sm:h-12 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900">
                 No tutorial selected
               </h3>
-              <p className="text-gray-500">
+              <p className="text-sm sm:text-base text-gray-500">
                 Generate a new tutorial or select one from the history
               </p>
             </div>
