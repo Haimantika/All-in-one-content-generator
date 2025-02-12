@@ -16,7 +16,7 @@ Before you begin, ensure you have the following installed:
 - Node.js (v18 or higher)
 - npm (v8 or higher)
 - [DigitalOcean account](https://www.digitalocean.com/)
-- An OpenAI API key
+
 
 ## Setup
 
@@ -31,9 +31,10 @@ Before you begin, ensure you have the following installed:
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add your OpenAI API key:
+3. Create a `.env` file in the root directory and add your DigitalOcean GenAI Agent URL and Endpoint key:
    ```env
-   VITE_OPENAI_API_KEY=your_api_key_here
+  VITE_AGENT_BASE_URL=your_agent_url
+  VITE_SECURE_AGENT_KEY=your_endpoint_access_key
    ```
 
 4. Start the development server:
@@ -56,7 +57,7 @@ src/
 ├── App.tsx           # Main application component
 ├── main.tsx         # Application entry point
 ├── services/
-│   └── openai.ts    # OpenAI API integration
+│   └── openai.ts    # AI integration
 ├── types/
 │   └── index.ts     # TypeScript type definitions
 └── index.css        # Global styles
@@ -79,13 +80,6 @@ To preview the production build:
 npm run preview
 ```
 
-## Best Practices
-
-- Keep your OpenAI API key secure and never commit it to version control
-- Use TypeScript for better type safety and developer experience
-- Follow the existing code style and formatting
-- Write meaningful commit messages
-- Test thoroughly before deploying
 
 ## Contributing
 
