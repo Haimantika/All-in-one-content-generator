@@ -33,8 +33,8 @@ Before you begin, ensure you have the following installed:
 
 3. Create a `.env` file in the root directory and add your DigitalOcean GenAI Agent URL and Endpoint key:
    ```env
-  VITE_AGENT_BASE_URL=your_agent_url
-  VITE_SECURE_AGENT_KEY=your_endpoint_access_key
+     VITE_AGENT_BASE_URL=your_agent_url
+     VITE_SECURE_AGENT_KEY=your_endpoint_access_key
    ```
 
 4. Start the development server:
