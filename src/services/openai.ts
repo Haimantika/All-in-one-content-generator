@@ -24,7 +24,7 @@ export async function generateTutorial(topic: string): Promise<string> {
     const prompt = `Your task is to generate a nice in-depth tutorial based on the input provided. Use simple language and provide the article in markdown format.\n\nTopic: ${topic}\n\nPlease create a comprehensive tutorial that includes:\n1. Introduction\n2. Prerequisites (if any)\n3. Step-by-step instructions\n4. Code examples (if applicable)\n5. Best practices\n6. Common pitfalls\n7. Conclusion`;
 
     const response = await client.chat.completions.create({
-      model: "llama3.3-70b-instruct",
+      model: "Anthropic Claude 3.5 Sonnet",
       messages: [
         { role: "system", content: "You are an expert technical writer who creates clear, concise, and comprehensive tutorials." },
         { role: "user", content: prompt }
