@@ -116,7 +116,7 @@ function App() {
               <Sparkles className="w-12 h-12 text-indigo-600" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              All-in-one Content Generator
+              Tutorial Generator
             </h1>
             <p className="text-lg text-gray-600">
               Transform any topic into a comprehensive tutorial with AI
